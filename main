@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "tweet.h"
+#include "telemento.h"
+#include "arbol.h"
+#include "tlista.h"
+
+#include "hashtag.h"
+
+int main(void) {
+    tarbol arbol;
+    ponerarbolvacio(&arbol);
+    telemento elemento;
+    ttweet tweet;
+    thastagh hastagh;
+
+    FILE* archivo1= fopen("hashtags.txt", "r");
+    if (archivo1 == NULL) {
+        perror("Error al abrir el archivo");
+        exit(1);
+    }
+
+    while (fgets(elemento.hastagh,100,archivo1)!=NULL) {
+        elemento.hastagh[strcspn(elemento.hastagh,"\n")]='\0';
+        mostrarhasstag(elemento.hastagh);
+        ponerVacia(&elemento.lista);
+        insertar(&arbol,elemento);
+
+
+    }  fclose(archivo1);
+
+    FILE* archivo2= fopen("tweets.txt", "r");
+    if (archivo2 == NULL) {
+        perror("Error al abrir el archivo");
+        exit(1);
+    }
+    while (fgets(tweet,140,archivo2)!=NULL) {
+        tweet[strcspn(tweet,"\n")]='\0';
+        int contador=0;
+        while (tweet[contador]!='\0') {
+            if (tweet[contador]=='#') {
+                int j=0;
+                do {hastagh[j]=tweet[contador];
+                    j++;
+                    contador++;}
+                while (tweet[contador]!='\0'&&tweet[contador]!=' '&&tweet[contador]!='\n' && tweet[contador]!=','
+                && tweet[contador]!='.' && tweet[contador]!='?' && tweet[contador]!='!'&& tweet[contador]!=':'&& tweet[contador]!=';');
+
+                hastagh[j]='\0';
+                printf("insertando tweet con %s\n",hastagh);
+                insertartweet(&arbol,hastagh,tweet);
+
+            }else contador++;
+        }
+
+
+    }
+
+
+
+    fclose(archivo2);
+
+    printf("Introduzca un hashtag para buscar: ");
+    scanf("%s",&hastagh);
+    buscartweet(arbol,hastagh);
+
+
+
+
+    return 0;
+}
+
